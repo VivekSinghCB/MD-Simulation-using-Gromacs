@@ -1,0 +1,363 @@
+----INSTALL UBUNTU-----
+UPGRADE AND UPDATE LIBRARIES OF UBUNTU BY FOLLOWING COMMANDS:
+
+sudo apt update
+sudo apt upgrade
+sudo apt install gcc
+sudo apt install cmake
+sudo apt install build-essential
+sudo apt install libfftw3-dev OR
+sudo apt-get install -y libfftw3-dev
+
+ONCE THE ABOVE COMMANDS ARE INTERED AND LINUX SYSTEM IS UPDATED, PROCEED TO INSTALL GROMACS
+
+wget ftp://ftp.gromacs.org/pub/gromacs/gromacs-2023.2.tar.gz  # Download the latest version
+tar -xvzf gromacs-2023.2.tar.gz  # Extract the file
+cd gromacs-2023.2  # Navigate to the directory
+mkdir build && cd build  # Create and move to the build directory
+cmake .. -DGMX_BUILD_OWN_FFTW=ON -DGMX_MPI=ON -DGMX_GPU=OFF -DCMAKE_INSTALL_PREFIX=/usr/local/gromacs  # Configure installation
+make -j$(nproc)  # Compile using all available cores
+sudo make install  # Install GROMACS
+
+-----------------Install Chimera------------------------
+Download the set-up file from "https://www.cgl.ucsf.edu/chimera/download.html"
+Move the file to desired folder.
+In tht folder open terminal
+Command:
+ls (to check the name of setup file)
+chmod +x CHIMERA-INSTALLER.bin
+./CHIMERA-INSTALLER.bin
+ 
+-----------------Autodoc-Vinna------------------------
+Go to download page "http://vina.scripps.edu/download.html"
+Move the file to desired folder.
+In that folder open terminal
+Command:
+ls (to check the name of setup file)
+tar -xzvf autodock_vina_1_1_2_linux_x86.tgz
+
+-------------------Install-GRACE----------------------
+sudo apt-get install grace  
+
+------------------------VMD---------------------------
+https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD
+1. Save the .tar.gz file in working folder
+2. open the extracted folder and run command './configure' by opening the termianl  
+3. Open the folder src in terminal and run the command 'sudo make install' 
+4. type 'vmd' in termial and program should run. 
+
+
+
+
+
+######### STEPS FOR MD AS FOLLOWS ######### 
+
+To get all the extra files go to-
+https://github.com/DweipayanG/GROMACS-Protein-Ligand
+and Code > Download ZIP and Extract it to your working directory
+
+########### Link for Mackerel Lab to download different version of Charmm ff https://mackerell.umaryland.edu/charmm_ff.shtml ##########
+
+---PREPARE LIGAND AND RECEPTOR IN CHIMERA----
+1. Open the best pose with the receptor (POSE1.pdb) file
+2. Delete the chain of protein, for ligand (Select > chain > Actions > Atoms bonds > Delete) add hydrogen (Tools > Structure Editing > AddH) and save (File > Save mol2) it as LIG.mol2
+   Do the same for the protein after deleting the Ligand ( Tools > Surface binding analysis > Dock prep > Uncheck the box, incomplete side chains and Uncheck the box, Write Mol2 file > Ok > Ok > In assign charges select Gasteiger > Ok > Specify net charges , 0 , Gasteiger > Ok > Close > File > Save Pdb > Give the name REC > Save
+
+
+#Open the LIG.mol2 file (either using gedit command or directly in Notepad) 
+sudo apt install gedit
+gedit LIG.mol2
+
+############ Correction to be made in LIG.mol2 ############
+2.1.	"@<TRIPOS>MOLECULE" 
+        make sure this is the first line in file if anything is above this line then delete it 
+		
+2.2.      "@<TRIPOS>MOLECULE” there will be name after this line maybe xxx.pdb or ****** or anything else e.g. POSE1, change it to 'LIG'
+	
+2.3.	bond orders "@<TRIPOS>BOND" will be arranged differently in each file 
+arrange them in specific order to avoid errors use 
+
+perl sort_mol2_bonds.pl LIG.mol2 LIG.mol2
+
+3. Go to SwissParam "https://old.swissparam.ch/" and upload the 'Lig.mol2 file'
+
+4. Download the 'LIG.zip' folder, cut copy it into the working directory and copy all the files inside this folder and paste it to working directory
+
+
+---------GROMACS UBUNTU TUTORIAL-----------------------------------------------------------
+ 
+gmx pdb2gmx -f REC.pdb -ignh
+
+8 (CHARMM27)  # select the number for force field to be applied
+1 (TIP3P)     # select the number for water model to be applied
+
+NOTE- IF YOU GET ANY ERROR (e.g. Fatal Error: Incomplete ring in HIS89) AT THIS STEP THEN DELETE THE REC.pdb FILE PREPARED IN THE POINT NUMBER 2, AGAIN REPEAT THE STEP BUT THIS TIME- Open the best POSE1.pdb in Chimera Delete the ligand > Tools > Surface binding analysis > Dock prep > Olny Uncheck the box of Write Mol2 file not Incomplete side chain > Ok > Add hydrogen, Tick box of Consider each model... and Residue name based > Assign charges, Tick Gasteiger > Ok > File > Save Pdb > Give the name REC > Save 
+
+gmx editconf -f LIG.pdb -o LIG.gro   # converts LIG pdb file into gromacs format, LIG.pdb is from the zip file wich we got in step 4
+
+NOW, we have to merge both topology files manually by giving command or open in Notebook;
+gedit conf.gro LIG.gro # conf.gro is the topology file for REC or our Protein and LIG.gro is the topology file for Ligand
+
+*(Copy content from 3rd line of LIG.gro up to the 2nd last line)
+*(Open conf.gro and paste it in 2nd line, Check the Ln for the last line e.g. Ln 5297, Col 31 and edit the number in the second line e.g. if it is 5206 then we will edit that number to (5297-3)=5294)
+*(Everything should be aligned properly)
+*(Open merged 'conf.gro' file in chimera to check proper merging)
+
+-----EDIT THE FOLLOWING MANUALLY in topol.top ---------------------------------------------
+
+gedit topol.top   # or open in Notepad directly
+
+add below line;  below- ; Include forcefield parameters
+#include "charmm27.ff/forcefield.itp"
+
+; Include ligand topology 
+#include "LIG.itp"
+
+ALSO, AT THE BOTTOM OF THE SAME FILE (topol.top) PERFORM FOLLOWING CHANGES
+add- LIG           1
+align exactly below-
+Protein_chain_A    1
+
+
+-----EDIT THE FOLLOWING MANUALLY in Lig.itp ---------------------------------------------
+
+gedit Lig.itp   # or open in Notepad directly
+
+If there is any such line below-
+[ moleculetype ]
+; Name nrexcl
+lig_gmx2 3
+
+then change it to-
+[ moleculetype ]
+; Name nrexcl
+LIG 3
+(NOTE- In some cases this will already be LIG 3 so for such case no change is needed)
+
+------------------------------------------------------------------------------------------
+
+gmx editconf -f conf.gro -d 1.0 -bt triclinic -o box.gro
+
+gmx solvate -cp box.gro -cs spc216.gro -p topol.top -o box_sol.gro
+
+vmd box_sol.gro    # To visualise the solvated box
+
+gmx grompp -f ions.mdp -c box_sol.gro -p topol.top -o ION.tpr  
+(OR)
+gmx grompp -f ions.mdp -c box_sol.gro -maxwarn 2 -p topol.top -o ION.tpr
+
+
+gmx genion -s ION.tpr -p topol.top -conc 0.1 -neutral -o box_sol_ion.gro
+15 (number represents SOL, if it is representing other number then give that number)
+
+gmx grompp -f EM.mdp -c box_sol_ion.gro -p topol.top -o EM.tpr    
+(OR)
+gmx grompp -f EM.mdp -c box_sol_ion.gro -maxwarn 2 -p topol.top -o EM.tpr
+
+gmx mdrun -v -deffnm EM
+
+gedit NVT.mdp (or open in Notepad directly, Edit this file according to your need of how much time you want to give e.g. nsteps      = 50000    ; 2 * 50000 = 100 ps ; for 100ps)
+
+ 
+gmx make_ndx -f LIG.gro -o index_LIG.ndx
+	 > 0 & ! a H*      ( 0 System, & and, ! not, a atom, H* Selects all atoms whose names start with "H", typically hydrogen atoms)
+ 	 > q
+
+gmx genrestr -f LIG.gro -n index_LIG.ndx -o posre_LIG.itp -fc 1000 1000 1000
+	> select group 3   (Select that group which number represents (System_&_!H*)
+
+
+	
+Now, open topol.top file (open in Notepad directly)-
+
+at the end of the document 
+
+after- 
+
+"; Include Position restraint file
+#ifdef POSRES
+#include "posre.itp"
+#endif
+
+add below lines- 
+
+; Ligand position restraints
+#ifdef POSRES
+#include "posre_LIG.itp"
+#endif
+
+ 
+
+gmx make_ndx -f EM.gro -o index.ndx
+	
+	> 1 | 13  (Number represents Protein and LIG respectively, check it very carefully)
+	> q
+
+
+-------- EQUILIBRATION------------
+
+-----[NVT]-----
+
+gedit NVT.mdp (or open in Notepad directly, Edit this file according to your need of how much time you want to give e.g. nsteps      = 50000    ; 2 * 50000 = 100 ps ; for 100ps)
+
+gmx grompp -f NVT.mdp -c EM.gro -r EM.gro -p topol.top -n index.ndx -o NVT.tpr
+OR
+gmx grompp -f NVT.mdp -c EM.gro -r EM.gro -p topol.top -n index.ndx -maxwarn 2 -o NVT.tpr
+	
+gmx mdrun -deffnm NVT
+
+
+-----[NPT]-----
+
+gedit NPT.mdp (or open in Notepad directly, Edit this file according to your need of how much time you want to give e.g. nsteps      = 50000    ; 2 * 50000 = 100 ps ; for 100ps)
+
+gmx grompp -f NPT.mdp -c NVT.gro -r NVT.gro -p topol.top -n index.ndx -o NPT.tpr
+OR
+gmx grompp -f NPT.mdp -c NVT.gro -r NVT.gro -p topol.top -n index.ndx -maxwarn 2 -o NPT.tpr
+	
+gmx mdrun -deffnm NPT
+
+
+
+
+------------- [FINAL MD RUN/PRODUCTION] ------------------------
+
+gedit NPT.mdp (or open in Notepad directly, Edit this file according to your need of how much time you want to give e.g. nsteps      = 50000    ; 2 * 50000 = 100 ps ; for 100ps)
+
+gmx grompp -f MD.mdp -c NPT.gro -t NPT.cpt -p topol.top -n index.ndx -o MD.tpr
+OR
+gmx grompp -f MD.mdp -c NPT.gro -t NPT.cpt -p topol.top -n index.ndx -maxwarn 2 -o MD.tpr
+
+gmx mdrun -deffnm MD
+
+------ Output files MD.cpt, MD.edr, MD.gro, MD.txt, MD.tpr, MD.xtc -----------
+
+
+
+---------- Analysis -------------
+
+To get movie of simulation-
+
+-Open UCSF chimera; Tools > MD Ensemble Analysis > MD Movie > Get Ensemble Info > Gromacs > Give MD.tpr and MD.xtc simultaneously > Ok 
+-Select > Residues > Delete everything one by one EXCEPT LIG (Action > Atoms Bonds > Delete)
+-Give different color to LIG (Select > Residue > Action > Color > Select > Clear Selection)
+-Zoom to Ligand binding site with protein 
+-Open the dialogue box (which has been already open, Increase or Decrease the Playback speed and in the same dialogue box File > Record Movie > Give movie name > Tick the box Add mp4 suffix > File type mp4(Rest was kept as Default) > Record > Accept
+
+
+-------- [Recentering and Rewrapping Coordinates] --------------
+gmx trjconv -s MD.tpr -f MD.xtc -o MD_center.xtc -center -pbc mol -ur compact
+1   (Represents the number for 'Protein' in the title shown Select group for centering)
+0   (Represents the number for 'System' in the title shown Select group for output)
+
+
+
+------RMSD Calculations--------------
+----- Protein-LIG ----
+gmx rms -s MD.tpr -f MD_center.xtc -o rmsdPL.xvg
+1   (Represents the number for 'Protein' in the title shown Select group for least squares fit)
+13  (Represents the number for 'LIG' in the title shown Select group for RMSD calculation)
+
+xmgrace rmsdPL.xvg
+
+OR
+
+If want x-axis to be in ns then run below command-
+
+gmx rms -s MD.tpr -f MD_center.xtc -o rmsdPL.xvg -tu ns 
+1   (Represents the number for 'Protein' in the title shown Select group for least squares fit)
+13  (Represents the number for 'LIG' in the title shown Select group for RMSD calculation)
+
+xmgrace rmsdPL.xvg
+
+---- Protein-Backbone ----
+gmx rms -s MD.tpr -f MD_center.xtc -o rmsdPBackbone.xvg
+1   (Represents the number for 'Protein' in the title shown Select group for least squares fit)
+4   (Represents the number for 'Backbone' in the title shown Select group for RMSD calculation)
+
+xmgrace rmsdPBackbone.xvg
+
+NOW WE CAN VISUALISE BOTH RMSD GRAPH (Protein-Ligand and Protein-Backbone) TOGETHER BY BELOW COMMAND-
+xmgrace rmsdPL.xvg rmsdPBackbone.xvg
+
+
+
+
+
+
+------RMSF Calculations--------------
+---- for Protein ---------
+gmx rmsf -s MD.tpr -f MD_center.xtc -o rmsfP.xvg
+1   (Represents the number for 'Protein' in the title shown Select group(s) for root mean square calculation)
+xmgrace rmsfP.xvg
+
+----- for Ligand ----------
+gmx rmsf -s MD.tpr -f MD_center.xtc -o rmsfL.xvg
+1   (Represents the number for 'Protein' in the title shown Select group(s) for root mean square calculation)
+xmgrace rmsfL.xvg
+
+
+NOW WE CAN VISUALISE BOTH RMSF GRAPH (Protein and Ligand) TOGETHER BY BELOW COMMAND-
+xmgrace rmsfP.xvg rmsfL.xvg
+
+
+
+
+
+
+
+-----------h-bonds-------------------
+gmx hbond -s MD.tpr -f MD_center.xtc -num hBond.xvg
+1   (Represents the number for 'Protein' in the title shown Available static index groups:)
+13  (Represents the number for 'Protein' in the title shown Available static index groups:)
+xmgrace hBond.xvg
+
+OR
+
+If want x-axis to be in ns then run below command-
+gmx hbond -s MD.tpr -f MD_center.xtc -num hBond.xvg -tu ns
+1   (Represents the number for 'Protein' in the title shown Available static index groups:)
+13  (Represents the number for 'Protein' in the title shown Available static index groups:)
+xmgrace hBond.xvg
+
+
+
+
+-------------- Radius of Gyration ------------------
+---- for Protein --------
+gmx gyrate -s MD.tpr -f MD_center.xtc -o RofGyra_P.xvg
+1  (Represents the number for 'Protein' in the title shown Available static index groups:)
+xmgrace RofGyra_P.xvg
+
+
+---- for Ligand --------
+gmx gyrate -s MD.tpr -f MD_center.xtc -o RofGyra_L.xvg
+13  (Represents the number for 'Protein' in the title shown Available static index groups:)
+xmgrace RofGyra_L.xvg
+
+OR
+
+If want x-axis to be in ns then run below command-
+---- for Protein --------
+gmx gyrate -s MD.tpr -f MD_center.xtc -o RofGyra_P.xvg -tu ns
+1  (Represents the number for 'Protein' in the title shown Available static index groups:)
+xmgrace RofGyra_P.xvg
+
+
+---- for Ligand --------
+gmx gyrate -s MD.tpr -f MD_center.xtc -o RofGyra_L.xvg -tu ns
+13  (Represents the number for 'Protein' in the title shown Available static index groups:)
+xmgrace RofGyra_L.xvg
+
+
+NOW WE CAN VISUALISE BOTH Radius of Gyration Graph (Protein, Ligand) TOGETHER BY BELOW COMMAND-
+xmgrace RofGyra_P.xvg  RofGyra_L.xvg
+
+
+
+
+-------------ENERGY Calculations--------------------
+gmx energy -f MD.edr -o T-Protein_LIG.xvg
+48    [Note-PRESS ENTER TWICE] (Represents the number for 'T-Protein_LIG' Select the terms you want from the following list)
+xmgrace T-Protein_LIG.xvg
+
