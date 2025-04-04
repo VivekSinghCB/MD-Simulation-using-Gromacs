@@ -99,7 +99,7 @@ NOW, we have to merge both topology files manually by giving command or open in 
 gedit conf.gro LIG.gro # conf.gro is the topology file for REC or our Protein and LIG.gro is the topology file for Ligand
 
 *(Copy content from 3rd line of LIG.gro up to the 2nd last line)
-*(Open conf.gro and paste it in 2nd line, Check the Ln for the last line e.g. Ln 5297, Col 31 and edit the number in the second line e.g. if it is 5206 then we will edit that number to (5297-3)=5294)
+*(Open conf.gro and paste it just above last line, Check the Ln for the last line e.g. Ln 5297, Col 31 and edit the number in the second line e.g. if it is 5206 then we will edit that number to (5297-3)=5294)
 *(Everything should be aligned properly)
 *(Open merged 'conf.gro' file in chimera to check proper merging)
 
