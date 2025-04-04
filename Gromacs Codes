@@ -80,7 +80,7 @@ arrange them in specific order to avoid errors use
 perl sort_mol2_bonds.pl LIG.mol2 LIG.mol2
 
 3. Go to SwissParam "https://old.swissparam.ch/" and upload the 'Lig.mol2 file'
-
+     OR go to "https://app.cgenff.com/homepage" and upload the 'Lig.mol2 file and download both files to the working folder.
 4. Download the 'LIG.zip' folder, cut copy it into the working directory and copy all the files inside this folder and paste it to working directory
 
 
