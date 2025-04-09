@@ -156,9 +156,6 @@ gmx grompp -f EM.mdp -c box_sol_ion.gro -maxwarn 2 -p topol.top -o EM.tpr
 
 gmx mdrun -v -deffnm EM
 
-gedit NVT.mdp (or open in Notepad directly, Edit this file according to your need of how much time you want to give e.g. nsteps      = 50000    ; 2 * 50000 = 100 ps ; for 100ps)
-
- 
 gmx make_ndx -f LIG.gro -o index_LIG.ndx
 	 > 0 & ! a H*      ( 0 System, & and, ! not, a atom, H* Selects all atoms whose names start with "H", typically hydrogen atoms)
  	 > q
