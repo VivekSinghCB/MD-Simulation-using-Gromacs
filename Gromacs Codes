@@ -52,7 +52,7 @@ https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD
 
 ######### STEPS FOR MD AS FOLLOWS ######### 
 
-To get all the extra files go to-
+To get all the extra files, go to-
 https://github.com/VivekSinghCB/MD-Simulation-using-Gromacs.git
 and Code > Download ZIP and Extract it to your working directory
 
@@ -60,7 +60,7 @@ and Code > Download ZIP and Extract it to your working directory
 
 ---PREPARE LIGAND AND RECEPTOR IN CHIMERA----
 1. Open the best pose with the receptor (POSE1.pdb) file
-2. Delete the chain of protein, for ligand (Select > chain > Actions > Atoms bonds > Delete) add hydrogen (Tools > Structure Editing > AddH) and save (File > Save mol2) it as LIG.mol2
+2. Delete the chain of protein for ligand (Select > chain > Actions > Atoms bonds > Delete), add hydrogen (Tools > Structure Editing > AddH), and save (File > Save mol2) it as LIG.mol2
    Do the same for the protein after deleting the Ligand ( Tools > Surface binding analysis > Dock prep > Uncheck the box, incomplete side chains and Uncheck the box, Write Mol2 file > Ok > Ok > In assign charges select Gasteiger > Ok > Specify net charges , 0 , Gasteiger > Ok > Close > File > Save Pdb > Give the name REC > Save
 
 
@@ -70,18 +70,18 @@ gedit LIG.mol2
 
 ############ Correction to be made in LIG.mol2 ############
 2.1.	"@<TRIPOS>MOLECULE" 
-        make sure this is the first line in file if anything is above this line then delete it 
+        Make sure this is the first line in the file If anything is above this line, then delete it 
 		
 2.2.      "@<TRIPOS>MOLECULE” there will be name after this line maybe xxx.pdb or ****** or anything else e.g. POSE1, change it to 'LIG'
 	
 2.3.	bond orders "@<TRIPOS>BOND" will be arranged differently in each file 
-arrange them in specific order to avoid errors use 
+arrange them in a specific order to avoid errors use 
 
 perl sort_mol2_bonds.pl LIG.mol2 LIG.mol2
 
 3. Go to SwissParam "https://old.swissparam.ch/" and upload the 'Lig.mol2 file'
      OR go to "https://app.cgenff.com/homepage" and upload the 'Lig.mol2 file and download both files to the working folder.
-4. Download the 'LIG.zip' folder, cut copy it into the working directory and copy all the files inside this folder and paste it to working directory
+4. Download the 'LIG.zip' folder, cut copy it into the working directory, and copy all the files inside this folder and paste it to the working directory
 
 
 ---------GROMACS UBUNTU TUTORIAL-----------------------------------------------------------
@@ -95,7 +95,7 @@ NOTE- IF YOU GET ANY ERROR (e.g. Fatal Error: Incomplete ring in HIS89) AT THIS 
 
 gmx editconf -f LIG.pdb -o LIG.gro   # converts LIG pdb file into gromacs format, LIG.pdb is from the zip file wich we got in step 4
 
-NOW, we have to merge both topology files manually by giving command or open in Notebook;
+NOW, we have to merge both topology files manually by giving a command or opening in Notebook;
 gedit conf.gro LIG.gro # conf.gro is the topology file for REC or our Protein and LIG.gro is the topology file for Ligand
 
 *(Copy content from 3rd line of LIG.gro up to the 2nd last line)
@@ -107,7 +107,8 @@ gedit conf.gro LIG.gro # conf.gro is the topology file for REC or our Protein an
 
 gedit topol.top   # or open in Notepad directly
 
-add below line;  below- ; Include forcefield parameters
+Add a line below-
+; Include forcefield parameters
 #include "charmm27.ff/forcefield.itp"
 
 ; Include ligand topology 
@@ -161,7 +162,7 @@ gmx make_ndx -f LIG.gro -o index_LIG.ndx
  	 > q
 
 gmx genrestr -f LIG.gro -n index_LIG.ndx -o posre_LIG.itp -fc 1000 1000 1000
-	> select group 3   (Select that group which number represents (System_&_!H*)
+	> select group 3   (Select that group whose number represents (System_&_!H*)
 
 
 	
