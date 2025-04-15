@@ -1,0 +1,24 @@
+# This file was created Wed Apr  2 09:13:47 2025
+# Created by:
+#           :-) GROMACS - gmx rms, 2026.0-dev-20250210-0d8ce2b6b1 (-:
+# 
+# Executable:   /usr/local/gromacs/bin/gmx
+# Data prefix:  /usr/local/gromacs
+# Working dir:  /mnt/d/LAB/GMX_MD
+# Command line:
+#   gmx rms -s MD.tpr -f MD_center.xtc -o rmsdPBackbone.xvg
+# gmx rms is part of G R O M A C S:
+#
+# Glycine aRginine prOline Methionine Alanine Cystine Serine
+#
+@    title "RMSD"
+@    xaxis  label "Time (ps)"
+@    yaxis  label "RMSD (nm)"
+@TYPE xy
+@ subtitle "Backbone after lsq fit to Protein"
+   0.0000000    0.0004990
+  10.0000000    0.1082289
+  20.0000000    0.1114290
+  30.0000000    0.1204197
+  40.0000000    0.1345211
+  50.0000000    0.1195951

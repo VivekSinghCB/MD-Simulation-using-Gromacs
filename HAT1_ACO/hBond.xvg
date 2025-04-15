@@ -1,0 +1,30 @@
+# This file was created Wed Apr  2 10:18:57 2025
+# Created by:
+#          :-) GROMACS - gmx hbond, 2026.0-dev-20250210-0d8ce2b6b1 (-:
+# 
+# Executable:   /usr/local/gromacs/bin/gmx
+# Data prefix:  /usr/local/gromacs
+# Working dir:  /mnt/d/LAB/GMX_MD
+# Command line:
+#   gmx hbond -s MD.tpr -f MD_center.xtc -num hBond.xvg
+# gmx hbond is part of G R O M A C S:
+#
+# Gromacs Runs On Most of All Computer Systems
+#
+@    title "Number of hydrogen bonds"
+@    xaxis  label "Time (ps)"
+@    yaxis  label "Hbonds"
+@TYPE xy
+@ view 0.15, 0.15, 0.75, 0.85
+@ legend on
+@ legend box on
+@ legend loctype view
+@ legend 0.78, 0.8
+@ legend length 2
+@ s0 legend "Hydrogen bonds"
+      0.000          5
+     10.000          8
+     20.000          6
+     30.000          5
+     40.000          5
+     50.000          4

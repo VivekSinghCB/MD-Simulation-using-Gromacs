@@ -1,0 +1,24 @@
+# This file was created Wed Apr  2 09:13:19 2025
+# Created by:
+#           :-) GROMACS - gmx rms, 2026.0-dev-20250210-0d8ce2b6b1 (-:
+# 
+# Executable:   /usr/local/gromacs/bin/gmx
+# Data prefix:  /usr/local/gromacs
+# Working dir:  /mnt/d/LAB/GMX_MD
+# Command line:
+#   gmx rms -s MD.tpr -f MD_center.xtc -o rmsdPL.xvg
+# gmx rms is part of G R O M A C S:
+#
+# GRowing Old MAkes el Chrono Sweat
+#
+@    title "RMSD"
+@    xaxis  label "Time (ps)"
+@    yaxis  label "RMSD (nm)"
+@TYPE xy
+@ subtitle "LIG after lsq fit to Protein"
+   0.0000000    0.0005090
+  10.0000000    0.1478928
+  20.0000000    0.1272919
+  30.0000000    0.1438709
+  40.0000000    0.1443661
+  50.0000000    0.1473498

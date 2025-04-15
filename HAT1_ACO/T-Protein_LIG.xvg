@@ -1,0 +1,30 @@
+# This file was created Wed Apr  2 10:37:00 2025
+# Created by:
+#          :-) GROMACS - gmx energy, 2026.0-dev-20250210-0d8ce2b6b1 (-:
+# 
+# Executable:   /usr/local/gromacs/bin/gmx
+# Data prefix:  /usr/local/gromacs
+# Working dir:  /mnt/d/LAB/GMX_MD
+# Command line:
+#   gmx energy -f MD.edr -o T-Protein_LIG.xvg
+# gmx energy is part of G R O M A C S:
+#
+# Good ROcking Metal Altar for Chronical Sinners
+#
+@    title "GROMACS Energies"
+@    xaxis  label "Time (ps)"
+@    yaxis  label "(K)"
+@TYPE xy
+@ view 0.15, 0.15, 0.75, 0.85
+@ legend on
+@ legend box on
+@ legend loctype view
+@ legend 0.78, 0.8
+@ legend length 2
+@ s0 legend "T-Protein_LIG"
+    0.000000  299.539642
+   10.000000  298.329865
+   20.000000  301.890778
+   30.000000  297.855804
+   40.000000  293.861420
+   50.000000  302.331268

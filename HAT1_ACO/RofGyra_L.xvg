@@ -1,0 +1,33 @@
+# This file was created Wed Apr  2 10:29:56 2025
+# Created by:
+#          :-) GROMACS - gmx gyrate, 2026.0-dev-20250210-0d8ce2b6b1 (-:
+# 
+# Executable:   /usr/local/gromacs/bin/gmx
+# Data prefix:  /usr/local/gromacs
+# Working dir:  /mnt/d/LAB/GMX_MD
+# Command line:
+#   gmx gyrate -s MD.tpr -f MD_center.xtc -o RofGyra_L.xvg
+# gmx gyrate is part of G R O M A C S:
+#
+# S  C  A  M  O  R  G
+#
+@    title "Radius of gyration (total and around axes)"
+@    xaxis  label "Time (ps)"
+@    yaxis  label "Radius (nm)"
+@TYPE xy
+@ view 0.15, 0.15, 0.75, 0.85
+@ legend on
+@ legend box on
+@ legend loctype view
+@ legend 0.78, 0.8
+@ legend length 2
+@ s0 legend "Rg"
+@ s1 legend "Rg/sX/N"
+@ s2 legend "Rg/sY/N"
+@ s3 legend "Rg/sZ/N"
+      0.000 0.529459 0.415085 0.380226 0.493747
+     10.000 0.574135 0.425095 0.437910 0.535529
+     20.000 0.561474 0.442525 0.401364 0.523053
+     30.000 0.575230 0.457271 0.407412 0.535441
+     40.000 0.565715 0.460587 0.382545 0.530647
+     50.000 0.577761 0.443832 0.414641 0.546537
