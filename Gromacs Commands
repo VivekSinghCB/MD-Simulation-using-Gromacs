@@ -291,7 +291,7 @@ xmgrace rmsfP.xvg
 
 ----- for Ligand ----------
 gmx rmsf -s MD.tpr -f MD_center.xtc -o rmsfL.xvg
-1   (Represents the number for 'Protein' in the title shown Select group(s) for root mean square calculation)
+13   (Represents the number for 'LIG' in the title shown Select group(s) for root mean square calculation)
 xmgrace rmsfL.xvg
 
 
