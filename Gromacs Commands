@@ -307,7 +307,7 @@ xmgrace rmsfP.xvg rmsfL.xvg
 -----------h-bonds-------------------
 gmx hbond -s MD.tpr -f MD_center.xtc -num hBond.xvg
 1   (Represents the number for 'Protein' in the title shown Available static index groups:)
-13  (Represents the number for 'Protein' in the title shown Available static index groups:)
+13  (Represents the number for 'LIG' in the title shown Available static index groups:)
 xmgrace hBond.xvg
 
 OR
@@ -315,7 +315,7 @@ OR
 If want x-axis to be in ns then run below command-
 gmx hbond -s MD.tpr -f MD_center.xtc -num hBond.xvg -tu ns
 1   (Represents the number for 'Protein' in the title shown Available static index groups:)
-13  (Represents the number for 'Protein' in the title shown Available static index groups:)
+13  (Represents the number for 'LIG' in the title shown Available static index groups:)
 xmgrace hBond.xvg
 
 
@@ -330,7 +330,7 @@ xmgrace RofGyra_P.xvg
 
 ---- for Ligand --------
 gmx gyrate -s MD.tpr -f MD_center.xtc -o RofGyra_L.xvg
-13  (Represents the number for 'Protein' in the title shown Available static index groups:)
+13  (Represents the number for 'LIG' in the title shown Available static index groups:)
 xmgrace RofGyra_L.xvg
 
 OR
@@ -344,7 +344,7 @@ xmgrace RofGyra_P.xvg
 
 ---- for Ligand --------
 gmx gyrate -s MD.tpr -f MD_center.xtc -o RofGyra_L.xvg -tu ns
-13  (Represents the number for 'Protein' in the title shown Available static index groups:)
+13  (Represents the number for 'LIG' in the title shown Available static index groups:)
 xmgrace RofGyra_L.xvg
 
 
